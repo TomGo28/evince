@@ -1062,6 +1062,9 @@ pdf_document_get_info (EvDocument *document)
 			    EV_DOCUMENT_INFO_N_PAGES |
 			    EV_DOCUMENT_INFO_SECURITY |
 		            EV_DOCUMENT_INFO_PAPER_SIZE |
+#if POPPLER_CHECK_VERSION(0, 90, 0)
+			    EV_DOCUMENT_INFO_CONTAINS_JS |
+#endif
 			    EV_DOCUMENT_INFO_LICENSE;
 
 	g_object_get (PDF_DOCUMENT (document)->document,
@@ -1188,6 +1191,10 @@ pdf_document_get_info (EvDocument *document)
 	}
 
 	info->linearized = linearized ? g_strdup (_("Yes")) : g_strdup (_("No"));
+
+#if POPPLER_CHECK_VERSION(0, 90, 0)
+	info->contains_js = poppler_document_has_javascript (PDF_DOCUMENT (document)->document);
+#endif
 
 	return info;
 }
